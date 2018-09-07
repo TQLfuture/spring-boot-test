@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yixin.dao.AutodialerTaskMapper" >
+    <resultMap id="AutodialerTaskBaseMap" type="com.yixin.pojo.AutodialerTask">
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="start" property="start" jdbcType="INTEGER" />
+
+        <result column="alter_datetime" property="alterDatetime" jdbcType="TIMESTAMP" />
+        <result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />
+        <!--<result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />-->
+
+
+        <result column="dial_format" property="dialFormat" jdbcType="VARCHAR" />
+        <result column="destination_extension" property="destinationExtension" jdbcType="VARCHAR" />
+        <result column="destination_dialplan" property="destinationDialplan" jdbcType="VARCHAR" />
+        <result column="_origination_caller_id_number" property="originationCallerIdNumber" jdbcType="VARCHAR" />
+        <result column="call_pause_second" property="callPauseSecond" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="destination_context" property="destinationContext" jdbcType="VARCHAR" />
+        <result column="disable_dial_timegroup" property="disableDialTimeGroup" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="selectAutodialerTaskListByParams" resultMap="AutodialerTaskBaseMap">
+      select * from autodialer_task where 1 = 1
+      <if test="destinationExtension != null and destinationExtension !='' ">
+          and destination_extension = #{destinationExtension} and destination_context = 'public'
+      </if>
+      <if test="start != null and start !='' ">
+          and start = #{start}
+      </if>
+    </select>
+
+
+</mapper>

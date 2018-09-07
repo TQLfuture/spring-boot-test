@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yixin.dao.NumberTaskMapper" >
+    <!--
+        CREATE TABLE `number_25719527963047060` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `number` varchar(20) NOT NULL,
+      `state` int(11) DEFAULT NULL,
+      `description` varchar(255) DEFAULT NULL,
+      `calldate` datetime DEFAULT NULL,
+      `hangupdate` datetime DEFAULT NULL
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2741 DEFAULT CHARSET=utf8mb4;
+-->
+    <resultMap id="BaseMapNumberTask" type="com.yixin.pojo.NumberTask">
+        <id column="id" property="id" />
+        <result column="number" property="number" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+
+        <result column="calldate" property="callDate" jdbcType="TIMESTAMP" />
+        <result column="hangupdate" property="hangupdate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectValidNumberTask" resultMap="BaseMapNumberTask" parameterType="HashMap">
+        select * from ${tableName} where state is null limit 1
+    </select>
+
+    <select id="selectNumberTaskHungup" resultMap="BaseMapNumberTask" parameterType="HashMap">
+        select * from ${tableName} where 1 = 1
+        <if test="hangupdate != null and hangupdate != '' ">
+            and number = #{number}
+        </if>
+        limit 1
+    </select>
+
+    <update id="updateNumberTaskStatus"  parameterType="HashMap">
+        update ${tableName} set state = #{state}
+         <if test="callDate != null and callDate != '' ">
+             ,calldate = NOW()
+         </if>
+         where number = #{phone} limit 1
+    </update>
+
+
+    <select id="selectDialPhoneDoing" parameterType="HashMap">
+        select * from ${tableName} where state = 1 limit 1
+    </select>
+
+</mapper>
